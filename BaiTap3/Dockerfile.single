@@ -1,0 +1,24 @@
+# ============================================================
+# Single-stage Dockerfile (Dockerfile.single)
+# Dùng để so sánh dung lượng với Multi-stage build
+# ============================================================
+
+FROM node:18-alpine
+
+ENV PORT=3000
+
+WORKDIR /app
+
+# Copy toàn bộ khai báo dependency
+COPY package*.json ./
+
+# Cài đặt TẤT CẢ dependencies (bao gồm cả devDependencies)
+# → Kích thước node_modules lớn hơn đáng kể
+RUN npm install
+
+# Copy toàn bộ mã nguồn
+COPY server.js .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
